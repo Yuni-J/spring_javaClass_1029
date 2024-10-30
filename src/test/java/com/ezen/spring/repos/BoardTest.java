@@ -25,7 +25,7 @@ public class BoardTest {
 		for(int i=0; i<5000; i++) {
 			BoardVO bvo = new BoardVO();
 			bvo.setTitle("Test Title "+ i);
-			bvo.setWriter("tester"+((int)(Math.random()+1)+500)+"@tester.com");
+			bvo.setWriter("tester"+((int)(Math.random()*500)+1)+"@tester.com");
 			bvo.setContent("Text Content ..." + i);
 			
 			bdao.insert(bvo);
