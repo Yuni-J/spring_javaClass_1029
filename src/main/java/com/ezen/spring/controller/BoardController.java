@@ -60,6 +60,10 @@ public class BoardController {
 	@GetMapping({"/detail", "/modify"})
 	public void detail(int bno, Model m) {
 		// bno에 해당하는 BoardVO 객체를 DB에서 가져와서 모델로 전달
+		
+//		String path = request.getServletPath();
+//		log.info(">>>>>>> path > {}", path);
+		
 		BoardVO bvo = bsv.getDetail(bno);
 		m.addAttribute("bvo", bvo);
 		//return "/board/detail";

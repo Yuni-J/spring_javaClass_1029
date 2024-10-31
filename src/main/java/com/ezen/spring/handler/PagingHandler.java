@@ -1,5 +1,8 @@
 package com.ezen.spring.handler;
 
+import java.util.List;
+
+import com.ezen.spring.domain.CommentVO;
 import com.ezen.spring.domain.PagingVO;
 
 import lombok.Getter;
@@ -21,6 +24,8 @@ public class PagingHandler {
 	private PagingVO pgvo;  //현재 페이지 번호 : pagingVO pageNo 사용. (매개변수로 반다오기)
 	
 	private int realEndPage;  //진짜 마지막 페이지 끝 번호
+	
+	private List<CommentVO> cmtList;
 	
 	// 생성자에서 모든 값들이 계산되어 설정되어야 함.
 	public PagingHandler(int totalCount, PagingVO pgvo) {
@@ -53,6 +58,13 @@ public class PagingHandler {
 			this.endPage = realEndPage;
 		}
 		
+		
+	}
+	
+	// 댓글용
+	public PagingHandler(int totalCount, PagingVO pgvo, List<CommentVO>cmtList) {
+		this(totalCount, pgvo);
+		this.cmtList = cmtList;
 	}
 	
 }
