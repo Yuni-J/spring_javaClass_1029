@@ -66,5 +66,5 @@ public class PagingHandler {
 		this(totalCount, pgvo);
 		this.cmtList = cmtList;
 	}
-	
+	// 동기는 객체 여러개 보낼 수 있지만 비동기는 하나만 가능
 }

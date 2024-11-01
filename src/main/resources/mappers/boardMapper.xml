@@ -39,6 +39,10 @@
   		<include refid="search"></include>
   	</select>
   	
+  	<select id="getOneBno" resultType="long">
+  		select max(bno) from board
+  	</select>
+  	
   	<!-- search 동적 쿼리 -->
   	<!-- 
   		select * from board

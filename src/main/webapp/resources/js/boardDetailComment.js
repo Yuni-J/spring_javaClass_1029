@@ -28,14 +28,16 @@ document.getElementById('cmtAddBtn').addEventListener('click', ()=>{
 
 function spreadCommentList(bno, page=1){
     getCommentListFromServer(bno, page).then(result =>{
-        console.log(result);
+        console.log("ph>",result);
         // 댓글 뿌리기
         const ul = document.getElementById('cmtListArea');
-        if(result.length > 0){
-            ul.innerHTML="";  //반족 전에 기존 샘플 버리기
-            for(let cvo of result){
+        if(result.cmtList.length > 0){
+            if(page == 1){
+                ul.innerHTML="";  //반복 전에 기존 샘플 버리기(더보기 버튼에 의한 누적 불가능)
+            }
+            for(let cvo of result.cmtList){
                 let li = `<li class="list-group-item" data-cno=${cvo.cno}>`;
-                li += `<div class="list-group-item"> no.${cvo.cno}`;
+                li += `<div class="list-group-item">`;
                 li += `<div class="fw-bold">${cvo.writer}</div>`;
                 li += `${cvo.content}</div>`;
                 li += `<span class="badge text-bg-light rounded-pill">regDate ${cvo.regDate }</span>`;
@@ -44,6 +46,20 @@ function spreadCommentList(bno, page=1){
                 li += `<button type="button" data-cno=${cvo.cno} class="btn btn-outline-danger btn-sm del">X</button>`;
                 li += `</li>`;
                 ul.innerHTML += li;
+            }
+            // 더보기 버튼 숨김여부 체크 코드
+            let moreBtn = document.getElementById('moreBtn');
+            // 더보기 버튼이 표시되는 조건
+            // result = ph > pgvo > pageNo = 1 / realEndPage = 3 이면 
+            // 1 페이지에 더보기 버튼이 생기고 누르면 pageNo = 2로 변경 후 버튼 생성 pageNo = 3일 경우는 비생성
+            // 현재 페이지가 전체 페이지보다 작으면 표시
+            if(result.pgvo.pageNo < result.realEndPage){
+                // style.visibility = "hidden" : 숨김 / 'visible' : 표시
+                moreBtn.style.visibility = 'visible';  //버튼 표시
+                moreBtn.dataset.page = page + 1;  //1 페이지 증가 
+            } else {
+                //현재 페이지가 전체보다 작지 않다면...같거나 크다면...
+                moreBtn.style.visibility = 'hidden';  //숨김
             }
         } else {
             ul.innerHTML = `<li class="list-group-item">Comment List Empty</li>`
@@ -104,7 +120,8 @@ document.addEventListener('click', (e)=>{
     }
 
     if(e.target.id == 'moreBtn'){
-        let page = e.target.dateset.page;
+        let page = parseInt(e.target.dataset.page);
+        spreadCommentList(bnoVal, page);
     }
 })
 
