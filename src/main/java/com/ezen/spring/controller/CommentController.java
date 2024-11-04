@@ -1,7 +1,5 @@
 package com.ezen.spring.controller;
 
-import java.util.List;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ezen.spring.domain.CommentVO;
 import com.ezen.spring.domain.PagingVO;
 import com.ezen.spring.handler.PagingHandler;
+import com.ezen.spring.service.BoardService;
 import com.ezen.spring.service.CommentService;
 
 import lombok.RequiredArgsConstructor;
@@ -30,15 +29,25 @@ import lombok.extern.slf4j.Slf4j;
 public class CommentController {
 	
 	private final CommentService csv;
+	private final BoardService bsv;
+
 	
 	@PostMapping("/post")
 	public ResponseEntity<String> post(@RequestBody CommentVO cvo) {
 		log.info(">>>>>>> post cvo > {}", cvo);
 		int isOk = csv.post(cvo);
 		
-		return isOk > 0?
-			new ResponseEntity<String>("1", HttpStatus.OK) :
-			new ResponseEntity<String>("0", HttpStatus.INTERNAL_SERVER_ERROR); /*error시*/
+		// 댓글 수 추가
+		if(isOk > 0) {
+			bsv.increCmtCount(cvo); //// 댓글 추가 후 댓글 수 증가
+			return new ResponseEntity<String>("1", HttpStatus.OK);
+		} else {
+			return new ResponseEntity<String>("0", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+//		return isOk > 0?
+//			new ResponseEntity<String>("1", HttpStatus.OK) :
+//			new ResponseEntity<String>("0", HttpStatus.INTERNAL_SERVER_ERROR); /*error시*/
 	}
 	
 	/*
@@ -68,12 +77,20 @@ public class CommentController {
 	}
 	
 	@ResponseBody
-	@DeleteMapping(value = "/{cno}")
-	public String delete(@PathVariable("cno") long cno) {
-		int isOk = csv.delete(cno);
-		return isOk > 0 ? "1" : "0";
+	@DeleteMapping(value = "/{cno}/{bno}")
+	public String delete(@PathVariable("cno") long cno, @PathVariable("bno") long bno) {
+
+		 int isOk = csv.delete(cno);
+       
+        // 댓글 수 감소
+        if(isOk > 0 ) {
+        	bsv.decreCmtCount(bno); // 댓글이 삭제된 게시물의 댓글 수 감소
+            return "1";
+        } else {
+        	return "0";
+        }
+
+//		return isOk > 0 ? "1" : "0";
 	}
-	
-	
 	
 }

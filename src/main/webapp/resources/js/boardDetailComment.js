@@ -146,7 +146,7 @@ async function updateCommentToServer(cmtData) {
 // delete 메서드
 async function removeCommentToServer(cno) {
     try {
-        const url = "/comment/" + cno;  //그냥 보내는 것은 get / get은 생략가능
+        const url = "/comment/" + cno + "/" +bnoVal;  //그냥 보내는 것은 get / get은 생략가능
         const config = {
             method: 'delete'
         }

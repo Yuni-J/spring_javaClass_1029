@@ -51,6 +51,5 @@ public class CommentServiceImpl implements CommentService {
 		PagingHandler ph = new PagingHandler(totalCount, pgvo, cmtList);
 		return ph;
 	}
-	
 
 }

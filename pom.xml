@@ -193,7 +193,7 @@
 		
 		<!-- 댓글관련, 파일관련, 시큐리티관련, 스케줄러관련 -->
 		
-			<!-- 댓글관련 : json 파싱 역할 -->
+		<!-- 댓글관련 : json 파싱 역할 -->
 		<!-- jackson-databind-2.13.1  jackson-dataformat-xml-2.13.1 -->
 		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
 		<dependency>
@@ -207,7 +207,10 @@
 		    <artifactId>jackson-dataformat-xml</artifactId>
 		    <version>2.13.1</version>
 		</dependency>
-			<!-- 파일 관련 -->
+		
+		<!-- 파일 관련 -->
+		<!-- commons-fileupload 1.4 / commons-io 2.11.0 / thumbnailator 0.4.14 -->
+		<!-- tika-core 2.4.1 / tika-parsers 2.4.1 : 첨부파일이 이미지파일인지 확인 -->
 		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
 		<dependency>
 		    <groupId>commons-io</groupId>
@@ -240,7 +243,21 @@
 		    <type>pom</type>
 		</dependency>
 	
+		<!-- 스케줄러관련 quartz 2.3.2 / quartz-jobs 2.3.2 -->
+		<!-- https://mvnrepository.com/artifact/org.quartz-scheduler/quartz -->
+		<dependency>
+		    <groupId>org.quartz-scheduler</groupId>
+		    <artifactId>quartz</artifactId>
+		    <version>2.3.2</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.quartz-scheduler/quartz-jobs -->
+		<dependency>
+		    <groupId>org.quartz-scheduler</groupId>
+		    <artifactId>quartz-jobs</artifactId>
+		    <version>2.3.2</version>
+		</dependency>
 		
+		<!-- 시큐리티관련 -->
 				
 		
 		

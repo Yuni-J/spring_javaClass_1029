@@ -6,9 +6,13 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ezen.spring.domain.BoardDTO;
@@ -69,6 +73,7 @@ public class BoardController {
 		int totalCount = bsv.getTotal(pgvo);
 		PagingHandler ph = new PagingHandler(totalCount, pgvo);
 		
+		
 		log.info(">>> list page bvo > {}", totalCount);
 		m.addAttribute("list", list);
 		m.addAttribute("ph", ph);
@@ -84,6 +89,12 @@ public class BoardController {
 		//경로 확인
 		String path = request.getServletPath();
 		log.info(">>>>>>> path > {}", path);
+		//readCount
+		if(path.equals("/board/detail")) {
+			int cnt = bsv.readCount(bno);
+			log.info(">>> detail readCount > {}", cnt);
+		}
+		
 		
 		BoardDTO bdto = bsv.getDetail(bno);
 		m.addAttribute("bdto", bdto);
@@ -93,11 +104,18 @@ public class BoardController {
 	}
 	
 	@PostMapping("/update")
-	public String update(BoardVO bvo) {
+	public String update(BoardVO bvo, 
+			@RequestParam(name = "files", required = false)MultipartFile[] files) {
+		List<FileVO> flist = null;
 		
-		int isOk = bsv.update(bvo);
+		if(files[0].getSize() > 0) {
+			flist = fh.uploadFiles(files);
+		}
+		int isOk = bsv.update(new BoardDTO(bvo, flist));
+//		int isOk = bsv.update(bvo);
 		log.info(">>>>> update > {}", isOk>0?"OK":"FAIL");
 		
+
 		// detail.jsp로 이동 X => controller detail mapping으로 이동 => redirect:/
 		return "redirect:/board/detail?bno="+bvo.getBno();
 	}
@@ -111,6 +129,13 @@ public class BoardController {
 		return "redirect:/board/list";	
 	}
 	
+	@ResponseBody
+	@DeleteMapping("file/{uuid}")
+	public String fileDelete(@PathVariable("uuid")String uuid) {
+		int isOk = bsv.removeFile(uuid);
+		
+		return isOk>0? "1":"0";		
+	}
 	
 	
 	

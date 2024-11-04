@@ -74,6 +74,26 @@
 		</if>
 	</sql>
   	
+  	<update id="readCount" parameterType="int">
+  		update board set read_count = read_count + 1 where bno = #{bno}
+  	</update>
   
-  
+	<update id="increCmtCount">
+		update board set cmt_qty = cmt_qty + 1 where bno = #{bno}
+	</update>
+		
+	<update id="decreCmtCount">
+		update board set cmt_qty = cmt_qty - 1 where bno = #{bno}
+	</update>
+	
+<!-- 	<update id="syncCmtCount">
+		update board b set cmt_qty = (
+		select count(bno) from comment where bno = b.bno);
+	</update> -->
+	
+	<update id="hasFileUpdate">
+		update board set has_file = has_file + #{cnt}
+		where bno = #{bno}
+	</update>
+	
   </mapper>

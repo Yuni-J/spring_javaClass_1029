@@ -35,7 +35,7 @@
 			  </span>
 			</button>
 	    </form>
-	    ${ph }
+	    <%-- ${ph } --%>
 	</div>
 	<br>
 	<table class="table table-hover">
@@ -46,16 +46,22 @@
 		    	<th scope="col">writer</th>
 		    	<th scope="col">regDate</th>
 		    	<th scope="col">readCount</th>
+		    	<th scope="col">cmtQty</th>
+		    	
 		  	 </tr>
 		</thead>
 		<tbody>
 			<c:forEach items="${list }" var="bvo">
 		  		<tr>
 		  			<td>${bvo.bno } </td>
-		  			<td><a href="/board/detail?bno=${bvo.bno}">${bvo.title }</a></td>
+		  			<td style="position: relative;">
+					    <a href="/board/detail?bno=${bvo.bno}">${bvo.title}</a>
+					    <span class="position-absolute top-0 start-20 badge rounded-pill bg-secondary">${bvo.hasFile }</span>
+					</td>
 		  			<td>${bvo.writer }</td>
 		  			<td>${bvo.regDate }</td>
 		  			<td>${bvo.readCount }</td>
+		  			<td>${bvo.cmtQty }</td>		  			
 		  		</tr>	
 		  	</c:forEach>
 		</tbody>

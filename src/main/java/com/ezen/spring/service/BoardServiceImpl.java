@@ -9,6 +9,7 @@ import com.ezen.spring.dao.BoardDAO;
 import com.ezen.spring.dao.FileDAO;
 import com.ezen.spring.domain.BoardDTO;
 import com.ezen.spring.domain.BoardVO;
+import com.ezen.spring.domain.CommentVO;
 import com.ezen.spring.domain.FileVO;
 import com.ezen.spring.domain.PagingVO;
 
@@ -46,6 +47,17 @@ public class BoardServiceImpl implements BoardService {
 				isOk *= fdao.insertFile(fvo);
 			}
 		}
+		bdao.hasFileUpdate(bdao.getOneBno(), bdto.getFlist().size());
+		return isOk;
+	}
+	
+	@Override
+	public int removeFile(String uuid) {
+		long bno = fdao.getBnoToUuid(uuid);
+		int isOk = fdao.removeFile(uuid);
+		if(isOk > 0) {
+			bdao.hasFileUpdate(bno, -1);
+		}
 		return isOk;
 	}
 
@@ -71,11 +83,11 @@ public class BoardServiceImpl implements BoardService {
 		return bdto;
 	}
 
-	@Override
-	public int update(BoardVO bvo) {
-		// TODO Auto-generated method stub
-		return bdao.update(bvo);
-	}
+//	@Override
+//	public int update(BoardVO bvo) {
+//		// TODO Auto-generated method stub
+//		return bdao.update(bvo);
+//	}
 
 	@Override
 	public int delete(int bno) {
@@ -89,4 +101,49 @@ public class BoardServiceImpl implements BoardService {
 		return bdao.getTotal(pgvo);
 	}
 
+//	@Override
+//	public int removeFile(String uuid) {
+//		// TODO Auto-generated method stub
+//		return fdao.removeFile(uuid);
+//	}
+
+	@Transactional
+	@Override
+	public int update(BoardDTO boardDTO) {
+		// TODO Auto-generated method stub
+		int isOk = bdao.update(boardDTO.getBvo());
+		if(boardDTO.getFlist() == null) {
+			return isOk;
+		}
+		if(isOk > 0 && boardDTO.getFlist().size() > 0) {
+			for(FileVO fvo : boardDTO.getFlist()) {
+				fvo.setBno(boardDTO.getBvo().getBno());
+				isOk *= fdao.insertFile(fvo);
+			}
+		}
+		return isOk;
+	}
+
+	@Override
+	public int readCount(int bno) {
+		// TODO Auto-generated method stub
+		return bdao.readCount(bno);
+	}
+
+	@Override
+	public int increCmtCount(CommentVO cvo) {
+		// TODO Auto-generated method stub
+		return bdao.increCmtCount(cvo);
+	}
+
+	@Override
+	public int decreCmtCount(long bno) {
+		// TODO Auto-generated method stub
+		return bdao.decreCmtCount(bno);
+	}
+
+	@Override
+	public int syncCommentCount(long bno) {
+	   return bdao.syncCmtCount(bno);
+	}
 }
