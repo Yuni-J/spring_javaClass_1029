@@ -121,6 +121,7 @@ public class BoardServiceImpl implements BoardService {
 				isOk *= fdao.insertFile(fvo);
 			}
 		}
+		bdao.hasFileUpdate(bdao.getOneBno(), boardDTO.getFlist().size());
 		return isOk;
 	}
 

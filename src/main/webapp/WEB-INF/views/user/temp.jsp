@@ -6,7 +6,7 @@
 
 <div class="container-md">
 <br>
-	<h1>Board List Page</h1>
+	<h1>User ?? Page</h1>
 	<hr>
 
 </div>

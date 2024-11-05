@@ -38,3 +38,27 @@ bno bigint,
 file_size bigint,
 reg_date datetime default now(),
 primary key(uuid));
+
+
+--2024.11.05
+
+user table
+
+create table user(
+email varchar(256),
+pwd varchar(256) not null,
+nick_name varchar(256),
+reg_date datetime default now(),
+last_login datetime default now(),
+primary key(email));
+
+-- 권한 테이블 (auth)
+-- ADMIN + MANAGER + USER
+
+create table auth(
+id bigint auto_increment,
+email varchar(256) not null,
+auth varchar(256) not null,
+primary key(id),
+--외래키 지정
+foreign key(email) references user(email));
