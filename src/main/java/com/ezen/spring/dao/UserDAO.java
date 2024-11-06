@@ -17,4 +17,14 @@ public interface UserDAO {
 
 	int updateLastLogin(String authEmail);
 
+	List<UserVO> getList();
+
+	int modify(UserVO uvo);
+
+	int modifyPwdEmpty(UserVO uvo);
+
+	int remove(String email);
+
+	int removeAuth(String email);
+
 }

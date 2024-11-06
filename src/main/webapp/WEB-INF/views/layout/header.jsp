@@ -43,14 +43,20 @@
 	        <!-- 인증된 객체 가져오기=> 현재 로그인 정보는 : principal -->
 	        <sec:authentication property="principal.uvo.email" var="authEmail"/>
 	        <sec:authentication property="principal.uvo.nickName" var="authNick"/>
+	        <sec:authentication property="principal.uvo.authList" var="auths"/>
 		        <li class="nav-item">
 		        	<a class="nav-link" href="/board/register">게시판 글쓰기</a>
 		        </li>
-		         <li class="nav-item">
-		         	<a class="nav-link" href="#">${authNick }(${authEmail })</a>
+		        <li class="nav-item">
+		        	<a class="nav-link" href="/user/modify">회원정보수정 ${authNick }</a>
 		        </li>
-		         <li class="nav-item">
-		         	<a class="nav-link" href="/user/logout">로그아웃</a>
+		        <c:if test="${auths.stream().anyMatch(authVO -> authVO.auth.equals('ROLE_ADMIN')).get() }">
+			        <li class="nav-item">
+			        	<a class="nav-link text-danger" href="/user/list">회원리스트(ADMIN)</a>
+			        </li>
+		        </c:if>
+		        <li class="nav-item">
+		        	<a class="nav-link" href="/user/logout">로그아웃</a>
 		        </li>
 	        </sec:authorize>
 	       </ul>

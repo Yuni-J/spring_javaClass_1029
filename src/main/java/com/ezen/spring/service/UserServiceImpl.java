@@ -1,5 +1,7 @@
 package com.ezen.spring.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +24,35 @@ public class UserServiceImpl implements UserService {
 		// TODO Auto-generated method stub
 		int isOk = udao.insert(uvo);
 		return udao.insertAuthInit(uvo.getEmail());
+	}
+
+	@Transactional
+	@Override
+	public List<UserVO> getList() {
+		List<UserVO> userList = udao.getList();
+		for(UserVO uvo : userList) {
+			uvo.setAuthList(udao.selectAuths(uvo.getEmail()));
+		}
+		return userList;
+	}
+
+	@Override
+	public int modify(UserVO uvo) {
+		// TODO Auto-generated method stub
+		return udao.modify(uvo);
+	}
+
+	@Override
+	public int modifyPwdEmpty(UserVO uvo) {
+		// TODO Auto-generated method stub
+		return udao.modifyPwdEmpty(uvo);
+	}
+	
+	@Transactional
+	@Override
+	public int remove(String email) {
+		int isOk = udao.removeAuth(email);
+		return udao.remove(email);
 	}
 }
 

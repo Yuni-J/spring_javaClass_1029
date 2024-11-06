@@ -42,8 +42,10 @@ function spreadCommentList(bno, page=1){
                 li += `${cvo.content}</div>`;
                 li += `<span class="badge text-bg-light rounded-pill">regDate ${cvo.regDate }</span>`;
                 //수정 삭제 버튼 추가
-                li += `<button type="button" data-cno=${cvo.cno} class="btn btn-outline-warning btn-sm mod" data-bs-toggle="modal" data-bs-target="#myModal">%</button>`;
-                li += `<button type="button" data-cno=${cvo.cno} class="btn btn-outline-danger btn-sm del">X</button>`;
+                if(cvo.writer == authNick){
+                    li += `<button type="button" data-cno=${cvo.cno} class="btn btn-outline-warning btn-sm mod" data-bs-toggle="modal" data-bs-target="#myModal">%</button>`;
+                    li += `<button type="button" data-cno=${cvo.cno} class="btn btn-outline-danger btn-sm del">X</button>`;
+                }
                 li += `</li>`;
                 ul.innerHTML += li;
             }

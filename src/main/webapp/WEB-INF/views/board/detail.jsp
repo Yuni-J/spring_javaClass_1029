@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+    <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
     
 <jsp:include page="../layout/header.jsp" />
 
@@ -66,11 +67,15 @@
 	<hr>
 	<!-- comment line -->
 	<!-- comment post -->
+		<sec:authorize access="isAuthenticated()">
+		<sec:authentication property="principal.uvo.nickName" var="authNick"/>				
 	<div class="input-group mb-3">
-		<span class="input-group-text" id="cmtWriter">tester1@tester.com</span>
+		<span class="input-group-text" id="cmtWriter">${authNick }</span>
 		<input type="text" id="cmtText" class="form-control" placeholder="Add Comment..." aria-label="Username" aria-describedy="basic-addon1">
 		<button type="button" id="cmtAddBtn" class="btn btn-outline-secondary">post</button>
 	</div>
+	<c:set value="${authNick }" var="nick"  />
+		</sec:authorize>
 		
 	<!-- comment print -->
 	<ul class="list-group" id="cmtListArea">
@@ -112,6 +117,8 @@
 	<script type="text/javascript">
 		let bnoVal = `<c:out value="${bvo.bno }" />`;
 		console.log(bnoVal);
+		let authNick = `<c:out value="${nick }" />`;
+		console.log(authNick);
 	</script>
 
 	<script src="/resources/js/boardDetailComment.js"></script>
